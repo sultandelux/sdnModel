@@ -121,9 +121,10 @@ class SimpleMonitor13(switch.SimpleSwitch13):
 
         flow_dataset = pd.read_csv('FlowStatsfile.csv')
 
-        flow_dataset.iloc[:, 2] = flow_dataset.iloc[:, 2].str.replace('.', '')
-        flow_dataset.iloc[:, 3] = flow_dataset.iloc[:, 3].str.replace('.', '')
-        flow_dataset.iloc[:, 5] = flow_dataset.iloc[:, 5].str.replace('.', '')
+        # Ensure columns are of string type before replacing characters
+        flow_dataset.iloc[:, 2] = flow_dataset.iloc[:, 2].astype(str).str.replace('.', '')
+        flow_dataset.iloc[:, 3] = flow_dataset.iloc[:, 3].astype(str).str.replace('.', '')
+        flow_dataset.iloc[:, 5] = flow_dataset.iloc[:, 5].astype(str).str.replace('.', '')
 
         X_flow = flow_dataset.iloc[:, :-1].values
         X_flow = X_flow.astype('float64')
@@ -149,6 +150,7 @@ class SimpleMonitor13(switch.SimpleSwitch13):
         fail = 1.0 - acc
         self.logger.info("fail accuracy = {0:.2f} %".format(fail*100))
         self.logger.info("------------------------------------------------------------------------------")
+
 
     def flow_predict(self):
         try:
